@@ -6,13 +6,14 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Scanner;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class Client {
 
     private static DatagramSocket socket;  // 定义UDP套接字
-    private static final String serverIP = "127.0.0.1";  // 服务器IP地址
-    private static final int serverPort = 12345;  // 服务器端口号
+    private static String serverIP;  // 服务器IP地址
+    private static int serverPort;  // 服务器端口号
 
     public static boolean first_shutdownServer(int count) {
         try {
@@ -49,6 +50,11 @@ public class Client {
 
     public static void main(String[] args) throws Exception {
         socket = new DatagramSocket();  // 初始化UDP套接字
+        Scanner scanner = new Scanner(System.in);  // 创建输入扫描器
+        System.out.print("请输入服务器IP地址: ");  // 提示输入服务器IP地址
+        String serverIP = scanner.nextLine();  // 获取服务器IP地址
+        System.out.print("请输入服务器端口号: ");  // 提示输入服务器端口号
+        int serverPort = scanner.nextInt();  // 获取服务器端口号
         ConcurrentLinkedQueue<byte[]> message_queue = new ConcurrentLinkedQueue<>();  // 创建线程安全的消息队列
 
         Receiver receiver = new Receiver(socket, 12);  // 初始化接收器
